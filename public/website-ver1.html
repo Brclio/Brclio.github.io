@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brclio · 黄家宝 — 写代码，教编程，做产品</title>
+<meta name="description" content="Brclio（黄家宝 / AI悦创 / Bornforthis）的个人网站。程序员、编程教育者、作者与独立开发者，记录 Python 教学、技术写作、AI 实践与开源创作。">
+<meta name="author" content="Brclio · 黄家宝">
+<link rel="icon" type="image/png" href="brclio-sticker.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Caveat:wght@400;600&family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+<style>
+@font-face {
+  font-family: 'Huiwen Mincho';
+  src: url('/fonts/HuiwenMincho.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Xiaolai';
+  src: url('Xiaolai.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============ JOURNEY — CHAT INTERVIEW ============ */
+.journey-section { padding: 80px 2rem; background: #fefcf6; }
+.journey-inner { max-width: 1200px; margin: 0 auto; }
+.journey-headline {
+  font-family: 'Huiwen Mincho', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  text-align: center; margin-bottom: 2.5rem; color: #1a1a1a;
+}
+.journey-headline em { display: inline-block; font-style: normal; color: #2B7FD8; }
+
+.journey-two-screens {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 768px) {
+  .journey-two-screens { grid-template-columns: 1fr; }
+}
+
+.journey-window {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  background: #fff;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+.journey-window-bar {
+  background: #f0f0f0;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+.journey-window-dots { display: flex; gap: 6px; }
+.journey-window-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.journey-window-title { font-size: 12px; color: #888; font-weight: 500; }
+.journey-intro {
+  max-width: 640px;
+  margin: -1.5rem auto 2.5rem;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  text-align: center;
+  color: #777;
+}
+.journey-window-source {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border-top: 1px solid #e0e0e0;
+  background: #fefcf6;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #777;
+}
+.journey-window-source a {
+  color: #2B7FD8;
+  text-underline-offset: 3px;
+}
+.journey-window-source a:hover { background: #F4D758; }
+.journey-chat-area:focus-visible {
+  outline: 2px solid #2B7FD8;
+  outline-offset: -2px;
+}
+
+.journey-chat-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fafafa;
+}
+
+.jchat { max-width: 85%; }
+.jchat-name { font-size: 10px; color: #999; margin-bottom: 2px; font-weight: 600; }
+.jchat-tag { font-size: 10px; color: #2B7FD8; font-weight: 700; margin-bottom: 2px; }
+.jchat-msg {
+  padding: 8px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.jchat--prompt { align-self: flex-start; }
+.jchat--prompt .jchat-msg { background: #2B7FD8; color: #fff; border-bottom-left-radius: 4px; }
+.jchat--me { align-self: flex-end; }
+.jchat--me .jchat-msg { background: #F4D758; color: #1a1a1a; border-bottom-right-radius: 4px; }
+.jchat--me .jchat-name { text-align: right; }
+
+</style>
+<style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+body {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  color: #1a1a1a;
+  background: #fefcf6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: #F4D758; color: #1a1a1a; }
+
+/* ============ CUSTOM CURSOR GLOW ============ */
+.cursor-glow {
+  position: fixed;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(244,215,88,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+body:hover .cursor-glow { opacity: 1; }
+
+/* ============ SECTION COMMON ============ */
+section { position: relative; }
+.section-label {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 3rem;
+}
+
+/* ============ HERO — TERMINAL STYLE ============ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #0d1117;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+}
+
+.terminal-window {
+  width: 100%;
+  max-width: 720px;
+  background: #161b22;
+  border-radius: 12px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  background: #1c2129;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.terminal-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.terminal-dot--red { background: #ff5f57; }
+.terminal-dot--yellow { background: #febc2e; }
+.terminal-dot--green { background: #28c840; }
+.terminal-header-title {
+  flex: 1;
+  text-align: center;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  margin-right: 52px; /* offset for dots */
+}
+
+.terminal-body {
+  padding: 1.8rem 2rem 2.5rem;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  line-height: 1.8;
+  min-height: 360px;
+}
+.terminal-line {
+  opacity: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.terminal-line.visible {
+  opacity: 1;
+}
+.terminal-line .cmd {
+  color: #2B7FD8;
+}
+.terminal-line .cmd-text {
+  color: #8b949e;
+}
+.terminal-line .output {
+  color: #F4D758;
+}
+.terminal-line .highlight {
+  color: #28c840;
+}
+.terminal-line .link {
+  color: #F7A946;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.terminal-line .emoji {
+  color: #fff;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  background: #F4D758;
+  vertical-align: text-bottom;
+  animation: cursorBlink 1s step-end infinite;
+}
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 0.8; transform: translateY(0); }
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-scroll span {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+.hero-scroll-line {
+  width: 1px; height: 40px;
+  background: #F4D758;
+  opacity: 0.4;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.3; }
+  50% { transform: scaleY(1.5); opacity: 0.6; }
+}
+
+/* ============ ABOUT — CHAT DIALOG ============ */
+.about {
+  padding: 8rem 2rem;
+  background: linear-gradient(180deg, #fffef8 0%, #fefcf0 100%);
+  position: relative;
+}
+.about-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.about .section-label { text-align: center; }
+.about-headline {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 4rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.about-headline em {
+  font-style: normal;
+  color: #2B7FD8;
+}
+
+.about-chat-layout {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+}
+/* Photo area */
+.about-photo-area {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.about-photo-wrapper {
+  width: 240px; height: 240px;
+  border-radius: 28px;
+  background: #fff;
+  overflow: hidden;
+  border: 4px solid #F4D758;
+  box-shadow: 0 8px 40px rgba(244,215,88,0.2);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.about-photo-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 50px rgba(244,215,88,0.3);
+}
+.about-photo-wrapper img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: none;
+}
+.about-photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: #ddd;
+  gap: 0.5rem;
+}
+.about-photo-placeholder span {
+  font-size: 0.75rem;
+  color: #bbb;
+  font-weight: 400;
+}
+.about-photo-name {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* Chat bubbles */
+.about-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.chat-bubble {
+  max-width: 85%;
+  padding: 1rem 1.4rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(16px) scale(0.95);
+  animation: bubblePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  position: relative;
+}
+.chat-bubble--prompt {
+  align-self: flex-start;
+  background: #2B7FD8;
+  color: #fff;
+  border-bottom-left-radius: 6px;
+  box-shadow: 0 4px 16px rgba(43,127,216,0.2);
+}
+.chat-bubble--prompt .chat-sender {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.05em;
+}
+.chat-bubble--me {
+  align-self: flex-end;
+  background: #F4D758;
+  color: #1a1a1a;
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 4px 16px rgba(244,215,88,0.25);
+}
+.chat-bubble--me .chat-sender {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.6;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.05em;
+  text-align: right;
+}
+
+@keyframes bubblePop {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-chat-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  .about-photo-area { flex: none; }
+  .about-photo-wrapper { width: 180px; height: 180px; border-radius: 22px; }
+  .chat-bubble { max-width: 95%; }
+}
+
+/* ============ TIMELINE ============ */
+.timeline-section {
+  padding: 8rem 2rem;
+  background: #fefcf6;
+  position: relative;
+}
+.timeline-section-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.timeline-section .section-label { text-align: center; }
+.timeline-section-headline {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 5rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.timeline-section-headline em {
+  font-style: normal;
+  color: #2B7FD8;
+}
+.timeline {
+  position: relative;
+  padding-left: 3rem;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #F4D758, #2B7FD8, #F7A946);
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tl-item.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -3rem;
+  top: 0.5rem;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 3px solid #F4D758;
+  background: #fefcf6;
+  z-index: 1;
+  transition: all 0.3s;
+}
+.tl-item:nth-child(2)::before { border-color: #2B7FD8; }
+.tl-item:nth-child(3)::before { border-color: #F7A946; }
+.tl-item:nth-child(4)::before { border-color: #1a1a1a; }
+
+.tl-item.is-visible::before {
+  background: #F4D758;
+  box-shadow: 0 0 0 6px rgba(244,215,88,0.2);
+}
+.tl-item:nth-child(2).is-visible::before { background: #2B7FD8; box-shadow: 0 0 0 6px rgba(43,127,216,0.2); }
+.tl-item:nth-child(3).is-visible::before { background: #F7A946; box-shadow: 0 0 0 6px rgba(247,169,70,0.2); }
+.tl-item:nth-child(4).is-visible::before { background: #1a1a1a; box-shadow: 0 0 0 6px rgba(26,26,26,0.15); }
+
+.tl-year {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  color: #999;
+  margin-bottom: 0.5rem;
+}
+.tl-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+.tl-desc {
+  font-weight: 300;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ============ OPINIONS — FULLSCREEN SCROLL ============ */
+.opinions-section {
+  position: relative;
+}
+.opinion-slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.opinion-slide:nth-child(1) { background: #F4D758; }
+.opinion-slide:nth-child(2) { background: #2B7FD8; color: #fff; }
+.opinion-slide:nth-child(3) { background: #fefcf6; }
+.opinion-slide:nth-child(4) { background: #F7A946; }
+.opinion-slide:nth-child(5) { background: #1a2332; color: #fff; }
+
+.opinion-number {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: clamp(6rem, 20vw, 16rem);
+  opacity: 0.06;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  pointer-events: none;
+}
+.opinion-slide:nth-child(2) .opinion-number,
+.opinion-slide:nth-child(5) .opinion-number { opacity: 0.08; color: #fff; }
+
+.opinion-text { font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 5.5vw, 3.8rem);
+  max-width: 800px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(50px) scale(0.95);
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.opinion-text.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.opinion-deco {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem;
+  opacity: 0.5;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============ PROJECTS — MAGAZINE CARDS ============ */
+.projects {
+  padding: 10rem 2rem;
+  background: #fefcf6;
+}
+.projects-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.projects .section-label { text-align: center; }
+.projects-headline {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 5rem;
+  letter-spacing: -0.02em;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+.project-card {
+  border-radius: 24px;
+  padding: 3rem;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.project-card:hover {
+  box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+}
+.project-card--1 {
+  background: linear-gradient(135deg, #F4D758 0%, #F7A946 100%);
+}
+.project-card--1::before {
+  background: linear-gradient(135deg, #f0cc20 0%, #e89520 100%);
+}
+.project-card--2 {
+  background: linear-gradient(135deg, #2B7FD8 0%, #1a5fa0 100%);
+  color: #fff;
+}
+.project-card--2::before {
+  background: linear-gradient(135deg, #2070c8 0%, #144a80 100%);
+}
+.project-card:hover::before { opacity: 1; }
+
+.project-card-bg-text {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: clamp(4rem, 10vw, 8rem);
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  opacity: 0.1;
+  line-height: 1;
+  pointer-events: none;
+}
+.project-card--2 .project-card-bg-text { opacity: 0.12; }
+
+.project-card-content {
+  position: relative;
+  z-index: 1;
+}
+.project-card-emoji {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.project-card-title {
+  font-weight: 800;
+  font-size: 1.6rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+.project-card-desc {
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+.project-card-tag {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.project-card--1 .project-card-tag {
+  background: rgba(26,26,26,0.1);
+  color: #1a1a1a;
+}
+.project-card--2 .project-card-tag {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+/* ============ WORKS — HORIZONTAL SCROLL ============ */
+.works {
+  padding: 8rem 0;
+  background: #f5f2ea;
+  overflow: hidden;
+}
+.works-top {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  margin-bottom: 4rem;
+}
+.works .section-label { padding: 0 2rem; max-width: 1100px; margin: 0 auto 1rem; }
+.works-headline {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.02em;
+}
+
+.works-track {
+  display: flex;
+  gap: 2rem;
+  padding: 0 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.works-track::-webkit-scrollbar { display: none; }
+
+.work-card {
+  flex: 0 0 340px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  scroll-snap-align: start;
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.work-card:hover { transform: translateY(-8px); }
+
+.work-card-number {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 7vw, 4.5rem);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+  background: linear-gradient(135deg, #F4D758, #F7A946);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.work-card-unit {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 1.2rem;
+}
+.work-card-title {
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+.work-card-platform {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: 400;
+}
+
+/* ============ CONTACT ============ */
+.contact {
+  background: #1a2332;
+  color: #fff;
+  padding: 8rem 2rem;
+  text-align: center;
+}
+.contact-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.contact-headline {
+  font-family: 'Huiwen Mincho', 'Noto Serif SC', serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+.contact-sub {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  opacity: 0.5;
+  margin-bottom: 3rem;
+}
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+.contact-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 400;
+  opacity: 0.7;
+  transition: all 0.3s;
+  position: relative;
+  padding-bottom: 4px;
+}
+.contact-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: #F4D758;
+  transition: width 0.3s;
+}
+.contact-link:hover { opacity: 1; }
+.contact-link:hover::after { width: 100%; }
+
+.contact-quote {
+  font-weight: 300;
+  font-size: 0.9rem;
+  opacity: 0.35;
+  line-height: 1.8;
+}
+
+/* Footer */
+.footer {
+  background: #1a2332;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 2rem;
+  text-align: center;
+}
+.footer p {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em;
+}
+
+/* ============ PARALLAX DECORATION ============ */
+.parallax-dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .project-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .project-card { min-height: 320px; padding: 2rem; }
+  .timeline { padding-left: 2.5rem; }
+  .timeline::before { left: 4px; }
+  .tl-item::before { left: -2.5rem; width: 10px; height: 10px; }
+  .opinion-text { font-family: 'Huiwen Mincho', 'Noto Serif SC', serif; font-size: clamp(1.5rem, 6vw, 2.5rem); }
+  .work-card { flex: 0 0 280px; }
+  .contact-links { gap: 1.5rem; }
+  .terminal-window { border-radius: 8px; }
+  .terminal-body { padding: 1.2rem 1rem 2rem; font-size: 0.8rem; min-height: 280px; }
+  .terminal-header-title { display: none; }
+}
+
+/* ============ ANIMATIONS ============ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up-delay-1 { transition-delay: 0.1s; }
+.fade-up-delay-2 { transition-delay: 0.2s; }
+.fade-up-delay-3 { transition-delay: 0.3s; }
+
+/* ============ JOURNEY (MERGED ABOUT + TIMELINE) ============ */
+.journey-section {
+  padding: 80px 2rem;
+  background: #fefcf6;
+}
+.journey-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.journey-headline {
+  font-family: 'Huiwen Mincho', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #1a1a1a;
+}
+.journey-headline em {
+  font-style: normal;
+  color: #2B7FD8;
+}
+.journey-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .journey-grid { grid-template-columns: 1fr; }
+}
+.journey-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.chat-year {
+  font-size: 0.7rem;
+  color: #2B7FD8;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+.journey-right {
+  position: sticky;
+  top: 100px;
+}
+.journey-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.journey-photos .journey-photo-slot:first-child {
+  grid-column: 1 / -1;
+}
+.journey-photo-slot {
+  aspect-ratio: 4/3;
+  border-radius: 12px;
+  background: #f0ebe3;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+  border: 2px dashed #d4c4a8;
+}
+.journey-photo-slot:hover {
+  transform: scale(1.02);
+  border-color: #2B7FD8;
+}
+.journey-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.journey-photo-placeholder {
+  text-align: center;
+  color: #b8a890;
+  font-size: 24px;
+  line-height: 1.6;
+}
+.journey-photo-placeholder small {
+  font-size: 12px;
+  display: block;
+}
+.journey-note {
+  padding: 20px;
+  background: rgba(244,215,88,0.15);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #5a4a3a;
+  font-style: italic;
+  border: 1px solid rgba(244,215,88,0.3);
+  outline: none;
+  min-height: 80px;
+}
+.journey-note:focus {
+  border-color: #F4D758;
+  background: rgba(244,215,88,0.25);
+}
+
+</style>
+</head>
+<body>
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- ==================== HERO — TERMINAL ==================== -->
+<section class="hero">
+  <div class="terminal-window">
+    <div class="terminal-header">
+      <div class="terminal-dot terminal-dot--red"></div>
+      <div class="terminal-dot terminal-dot--yellow"></div>
+      <div class="terminal-dot terminal-dot--green"></div>
+      <div class="terminal-header-title">brclio@studio ~ %</div>
+    </div>
+    <div class="terminal-body" id="terminalBody">
+      <!-- Lines injected by JS typewriter -->
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ==================== ABOUT — IDEAS IN CONVERSATION ==================== -->
+<section class="journey-section" id="aboutSection">
+  <div class="journey-inner">
+    <p class="section-label fade-up">A Conversation</p>
+    <h2 class="journey-headline fade-up">聊聊编程，<em>怎么学、为什么教</em></h2>
+    <p class="journey-intro fade-up">根据我的两篇文章整理的自问自答，聊聊我对学习、教学与创造的想法。</p>
+
+    <div class="journey-two-screens fade-up">
+      <div class="journey-screen">
+        <div class="journey-window">
+          <div class="journey-window-bar">
+            <div class="journey-window-dots">
+              <span style="background:#ff5f57;"></span>
+              <span style="background:#ffbd2e;"></span>
+              <span style="background:#27c93f;"></span>
+            </div>
+            <div class="journey-window-title">和悦创聊聊 · 怎样真正学会编程</div>
+          </div>
+          <div class="journey-chat-area" role="region" aria-label="怎样真正学会编程，共 10 个话题，可上下滚动阅读" tabindex="0">
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">01 · 从学习编程，到教编程</div>
+              <div class="jchat-msg">先认识一下，你平时都在做什么？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">你好，我是悦创。黄家宝是我的名字，AI悦创、Bornforthis、Brclio，也都是我。写代码、教编程、写文章、做产品，这些事我一直在做。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">2018 年开始软件工程学习，2019 年开始一对一编程教学。越教越发现，很多人缺少的那一环，是把知识连起来、自己解决问题的能力。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">02 · 学习，是给自己多一种选择</div>
+              <div class="jchat-msg">不打算当程序员，也值得学 Python 吗？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">值得。整理资料、处理数据、让重复的工作自动完成，很多专业和工作都会遇到这样的需求。学编程，可以从你自己的问题出发。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">比如面对一大段需要清理的文本，不熟悉工具时，你可能只能逐个修改。学过之后，脑海里会多一个选项：这件事能不能交给程序？我很看重这种“想得到另一条路”的变化。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">03 · 看懂之后，还要连起逻辑</div>
+              <div class="jchat-msg">可我听课能懂，看代码也能懂，为什么自己就是写不出来？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">这句话我在教学里经常听到。顺着别人已经写好的代码往下读，和面对一个问题自己决定第一步怎么做，是两种不同的过程。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">所以我会引导你把问题拆开：需要什么信息？要经过哪些步骤？每一步为什么这样做？让语法接到思路上，才有机会独立写出来。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">04 · 有基础，也要检查连接处</div>
+              <div class="jchat-msg">我以前学过一些，再系统学一遍，之前的时间不就白花了？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">之前的接触会降低重新理解的难度，当然有价值。但熟悉一个词、见过一段代码，也容易让人误以为自己已经掌握。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">真正理解的部分可以快一点通过，同时把笔记整理好；含糊的地方就停下来补。系统学习要做的，是把零散的知识接成一条能走通的路。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">05 · 逻辑 &gt; 笔记 &gt; 语法 &gt; 作业</div>
+              <div class="jchat-msg">那你安排学习时，最看重什么？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">我会把逻辑放在最前面，接着是笔记、语法和作业。这个顺序提醒我们，别让做题数量挤掉了理解和整理的时间。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">知道怎么想，忘记语法时还能借助笔记找回来。适合当前阶段的作业，再帮助我们发现哪里没有理解、哪里还需要练。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">06 · 练习，要放在合适的位置</div>
+              <div class="jchat-msg">学生想多做题巩固，你为什么有时反而不急着留作业？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">我理解这种心情：想有个明确的任务，确认自己下课后也在进步。但编程知识的交叉性很强，一道看着简单的题，可能已经用到了后面才会学的内容。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">反复做已经会的操作，收获有限；为了完成一道超前的题，又不断打断课程去补后面的语法，学习顺序也会乱。我会看当前学到了哪里，再安排有用的练习。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">07 · 从理解示例，走向自己的小程序</div>
+              <div class="jchat-msg">那课后到底能做些什么？总不能只听吧？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">可以先回到课堂里的示例，看看自己在哪一步开始说不清楚。带着具体的疑问复习，比机械地把同一段代码再抄几遍，更容易发现问题。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">随着知识逐渐完整，再去做适当的练习，想想能用它做个什么小程序。让学过的东西参与解决一个实际问题，慢慢把它变成自己的能力。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">08 · 写下来的过程，也在检查理解</div>
+              <div class="jchat-msg">你为什么这么坚持上课就记笔记？课后看回放补不行吗？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">当场用自己的话整理，我能及时看到你记得对不对、哪里有遗漏。一个地方一直写不清楚，我们就能当场发现，接着讲、接着讨论。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">全部留到课后，要么依靠已经开始模糊的记忆，要么不断暂停回放重听，容易越积越多。我希望把课堂里的理解和记录一起完成，给以后的自己留一份找得到、用得上的笔记。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">09 · 让进度跟着理解走</div>
+              <div class="jchat-msg">家长担心进度慢，你会怎么沟通？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">我会先一起看清楚：哪些地方已经会了，哪些地方还说不明白。已经掌握的内容可以提速；需要吸收的部分，就留出理解、表达和整理的时间。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">知识点可以很快讲完，可学生还需要时间把它变成自己的东西。进度要结合具体的人来调整，也欢迎学生直接说出哪里觉得慢，我会一起复盘教学节奏。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">10 · 把卡住的地方带回课堂</div>
+              <div class="jchat-msg">如果我认真学了，还是卡住，甚至答错了呢？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">把你已经想到哪一步、哪里开始不确定说出来，我们才有地方继续往下走。你尝试过的思路，本身就值得拿来讨论。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">给成长留一点时间，也给犯错留一点空间。我希望你学着学着，越来越敢提问、敢表达、敢自己动手解决问题。</div>
+            </div>
+          </div>
+          <div class="journey-window-source">
+            <span>上下滚动继续聊 · 10 个话题</span>
+            <a href="https://bornforthis.cn/column/Python-Programming-Course/P09-FAQ/FAQ03.html" target="_blank" rel="noopener noreferrer">读我的学习 FAQ ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-screen">
+        <div class="journey-window">
+          <div class="journey-window-bar">
+            <div class="journey-window-dots">
+              <span style="background:#ff5f57;"></span>
+              <span style="background:#ffbd2e;"></span>
+              <span style="background:#27c93f;"></span>
+            </div>
+            <div class="journey-window-title">和悦创聊聊 · 教学、写书与 AI</div>
+          </div>
+          <div class="journey-chat-area" role="region" aria-label="教学、写书与 AI，共 9 个话题，可上下滚动阅读" tabindex="0">
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">01 · 教学，从自己学明白开始</div>
+              <div class="jchat-msg">你觉得，怎样才算把一门课教好了？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">我会先问自己：这个知识，我真的研究明白了吗？我能不能把它怎么来的、为什么这样用，一步步讲给另一个人听？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">学生的疑问也会让我重新审视自己的理解。所以教课对我来说，始终伴随着学习和修正。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">02 · 让不同基础的人都能进入问题</div>
+              <div class="jchat-msg">你在前言里反复说“讲透”，到底怎样才叫透？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">初学者听完，能觉得这件事原来可以理解；学过的人再听，也能发现以前没有想通的道理。要做到这一点，老师自己得理解得足够扎实。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">比如给小学生讲鸡兔同笼：35 个头、94 条腿，可以先想象兔子都抬起两条前腿。此时一共 70 条着地的腿，多出的 24 条，恰好对应 12 只兔子。先从孩子能理解的常识出发，道理才进得去。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">03 · 把课堂里的积累，带给更多人</div>
+              <div class="jchat-msg">已经在做私教，为什么还花那么多精力写书？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">一对一教学很珍贵，但我的时间和精力有上限。总有人很想学，却暂时没有机会来上课。我想让课堂里反复打磨过的思路，能通过书被更多人接触到。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">从 2022 年开始图书出版相关合作，到《编程启蒙：思维与代码》的创作，我一直在尝试把教学积累整理成可以反复阅读、循序渐进学习的内容。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">04 · 思维与代码，两条线一起走</div>
+              <div class="jchat-msg">你想写的，会是一份更详细的 Python 语法清单吗？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">我希望读者先理解编程在做什么，怎样认识和处理一个问题，再进入 Python 的系统学习。写代码的过程，又会反过来训练思维。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">章节之间怎样衔接、初学者会在哪一步卡住，都需要细致设计。我会把教学里发现的问题带回书稿里，继续调整表达和学习顺序。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">05 · AI 时代，人的思考仍然重要</div>
+              <div class="jchat-msg">可现在 AI 已经会写代码了，你还会推荐人学编程？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">会。因为你仍然需要把需求说清楚，知道自己想解决什么、想得到怎样的结果。工具可以帮忙，但方向和核心想法需要你参与。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">在自己的领域里积累理解，再把 AI 用进真实的问题中，我觉得这样的学习值得投入。只盯着“立刻靠 AI 赚钱”，反而容易被热闹牵着走。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">06 · 保留自己的推理和验证</div>
+              <div class="jchat-msg">那面对 AI 给出的代码，你会怎样提醒学习者？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">先试着理解过程，对程序会得到什么结果形成一个预期，再运行、观察、核对。工具越方便，越要给自己留下主动思考的机会。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">遇到难以凭空推演的中间步骤，也可以输出看看；想研究某个变化的影响，就尽量一次只改变一个因素。把思考和动手验证接起来。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">07 · 把改正的过程也留下来</div>
+              <div class="jchat-msg">学习笔记写错了，整理时直接删掉就好了吧？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">我更希望你在错误附近补上正确的理解，并说明自己是在哪里转过弯来的。以后回看，你会知道这个地方为什么容易出错。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">那些曾经不理解、后来弄明白的地方，是自己的学习经历。留住它，笔记才真正属于你。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">08 · 把自己的方法做成可以使用的东西</div>
+              <div class="jchat-msg">你做网站、工具和 Design Skill，也和这些想法有关？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">对。我会把学习与实践整理成文章，也会把想法做成网站、工具和开源项目。Brclio Design System，就是把自己的品牌规范整理成可复用的 Skill。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">做东西时，我也提醒自己先让功能跑通，再逐步优化。让想法落到能使用的东西上，过程中遇到的问题，再带着我继续学习。</div>
+            </div>
+            <div class="jchat jchat--prompt">
+              <div class="jchat-name">💬 你问</div>
+              <div class="jchat-tag">09 · 带着好奇，慢慢把问题弄明白</div>
+              <div class="jchat-msg">如果只能给刚开始学习的人留一句话，你想说什么？</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">多问一步：这件事为什么这样？还能不能换一种方法？把答案想一想、写下来，再去试一试。</div>
+            </div>
+            <div class="jchat jchat--me">
+              <div class="jchat-name">Brclio</div>
+              <div class="jchat-msg">我希望编程带给你创造的乐趣，也让你面对问题时多一点选择。慢慢来，遇到挫折也没关系，愿你一直保有把事情弄明白的好奇心。</div>
+            </div>
+          </div>
+          <div class="journey-window-source">
+            <span>上下滚动继续聊 · 9 个话题</span>
+            <a href="https://bornforthis.cn/column/Python-Programming-Course/Preface.html" target="_blank" rel="noopener noreferrer">读我的前言 ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== OPINIONS ==================== -->
+<section class="opinions-section">
+  <div class="opinion-slide">
+    <div class="opinion-number">✦</div>
+    <p class="opinion-text">先理解问题，再学习代码<br>编程，是一种解决问题的能力</p>
+    <span class="opinion-deco">— what I believe</span>
+  </div>
+</section>
+
+<!-- ==================== PROJECTS ==================== -->
+<section class="projects">
+  <div class="projects-inner">
+    <p class="section-label fade-up">What I Do</p>
+    <h2 class="projects-headline fade-up">教人创造，也亲手创造</h2>
+    <div class="project-grid">
+      <div class="project-card project-card--1 fade-up" data-tilt>
+        <div class="project-card-bg-text">PY</div>
+        <div class="project-card-content">
+          <div class="project-card-emoji">✦</div>
+          <a href="https://pythontutor.bornforthis.cn" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
+          <h3 class="project-card-title">Python 一对一教学</h3>
+          <p class="project-card-desc">从 2019 年开始，陪伴不同基础的学习者理解编程。围绕编程思维、基础知识与项目实践，找到适合自己的学习路径。</p>
+          <span class="project-card-tag">Python 教学 · 点击了解 →</span>
+          </a>
+        </div>
+      </div>
+      <div class="project-card project-card--2 fade-up fade-up-delay-1" data-tilt>
+        <div class="project-card-bg-text">DS</div>
+        <div class="project-card-content">
+          <div class="project-card-emoji">◈</div>
+          <a href="https://github.com/Brclio/brclio-design-system" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
+          <h3 class="project-card-title">Brclio Design System</h3>
+          <p class="project-card-desc">把个人品牌的配色、字体、组件与排版规范整理成 Design Skill，让网页、教程与图文创作保持自己的风格。</p>
+          <span class="project-card-tag">开源 Design Skill · 查看项目 →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WORKS ==================== -->
+<section class="works">
+  <div class="works-top">
+    <p class="section-label fade-up">Collections</p>
+    <h2 class="works-headline fade-up">学习、记录与作品</h2>
+  </div>
+  <div class="works-track">
+    <a href="https://bornforthis.cn" target="_blank" rel="noopener noreferrer" class="work-card" style="text-decoration:none;">
+      <div class="work-card-number">🐍</div>
+      <div class="work-card-unit">LEARN</div>
+      <div class="work-card-title">编程学习与笔记</div>
+      <div class="work-card-platform">AI悦创 · Bornforthis</div>
+    </a>
+    <a href="https://blog.bornforthis.cn" target="_blank" rel="noopener noreferrer" class="work-card" style="text-decoration:none;">
+      <div class="work-card-number">✍️</div>
+      <div class="work-card-unit">WRITE</div>
+      <div class="work-card-title">技术写作与实践</div>
+      <div class="work-card-platform">文章 · 工具 · 学习记录</div>
+    </a>
+    <a href="https://github.com/Brclio" target="_blank" rel="noopener noreferrer" class="work-card" style="text-decoration:none;">
+      <div class="work-card-number">🔧</div>
+      <div class="work-card-unit">BUILD</div>
+      <div class="work-card-title">开源与独立开发</div>
+      <div class="work-card-platform">GitHub @Brclio · 项目与代码</div>
+    </a>
+    <a href="https://brclio-design-demos.brclio.com/" target="_blank" rel="noopener noreferrer" class="work-card" style="text-decoration:none;">
+      <div class="work-card-number">🎨</div>
+      <div class="work-card-unit">DESIGN</div>
+      <div class="work-card-title">Brclio 设计实验</div>
+      <div class="work-card-platform">设计系统 · 页面与组件演示</div>
+    </a>
+    <a href="https://space.bilibili.com/405961705" target="_blank" rel="noopener noreferrer" class="work-card" style="text-decoration:none;">
+      <div class="work-card-number">🎬</div>
+      <div class="work-card-unit">SHARE</div>
+      <div class="work-card-title">编程视频与分享</div>
+      <div class="work-card-platform">哔哩哔哩 · 学习与教学</div>
+    </a>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section class="contact">
+  <div class="contact-inner">
+    <h2 class="contact-headline fade-up">认识一下，我是 Brclio</h2>
+    <p class="contact-sub fade-up">Learn. Build. Teach. Share.</p>
+    <div class="contact-links fade-up">
+      <a href="mailto:aiyuechuang@gmail.com" class="contact-link">📮 aiyuechuang@gmail.com</a>
+      <a href="https://www.xiaohongshu.com/user/profile/5e413a430000000001000f4c" target="_blank" rel="noopener noreferrer" class="contact-link">📕 小红书 @Brclio</a>
+      <a href="https://github.com/Brclio" target="_blank" rel="noopener noreferrer" class="contact-link">💻 GitHub @Brclio</a>
+      <a href="https://x.com/huangjiarongbao" target="_blank" rel="noopener noreferrer" class="contact-link">✦ X @huangjiarongbao</a>
+      <a href="https://space.bilibili.com/405961705" target="_blank" rel="noopener noreferrer" class="contact-link">🎬 哔哩哔哩</a>
+      <a href="https://bornforthis.cn" target="_blank" rel="noopener noreferrer" class="contact-link">🌐 Bornforthis</a>
+    </div>
+    <p class="contact-quote fade-up">程序员｜编程教育者｜作者｜独立开发者<br>写代码、教编程、做产品<br>Stay curious. Keep building.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2026 Brclio · 黄家宝 / AI悦创 / Bornforthis · Learn. Build. Teach. Share.</p>
+</footer>
+
+<script>
+/* ============ TERMINAL TYPEWRITER ============ */
+(function() {
+  const body = document.getElementById('terminalBody');
+
+  // Define terminal lines: { type: 'cmd'|'output'|'blank', text, html }
+  const lines = [
+    { type: 'cmd',    text: '$ whoami' },
+    { type: 'output', html: '<span class="output">Brclio · 黄家宝</span>' },
+    { type: 'blank' },
+    { type: 'cmd',    text: '$ cat about.md' },
+    { type: 'output', html: '<span class="output">程序员｜编程教育者｜作者｜独立开发者</span>' },
+    { type: 'output', html: '<span class="output">写代码，教编程，做产品</span>' },
+    { type: 'output', html: '<span class="output">AI悦创 / Bornforthis / Brclio</span>' },
+    { type: 'output', html: '<a class="link" href="#aboutSection">↳ 认识 Brclio：学习、教学与创造</a>' },
+    { type: 'blank' },
+    { type: 'cmd',    text: '$ echo "Learn. Build. Teach. Share."' },
+    { type: 'output', html: '<span class="highlight">✨</span>' },
+  ];
+
+  // Create all line elements
+  const lineEls = [];
+  lines.forEach(line => {
+    const div = document.createElement('div');
+    div.className = 'terminal-line';
+    if (line.type === 'blank') {
+      div.innerHTML = '&nbsp;';
+    }
+    lineEls.push({ el: div, data: line });
+    body.appendChild(div);
+  });
+
+  // Add cursor line
+  const cursorLine = document.createElement('div');
+  cursorLine.className = 'terminal-line visible';
+  cursorLine.innerHTML = '<span class="terminal-cursor"></span>';
+  cursorLine.style.opacity = '0';
+  body.appendChild(cursorLine);
+
+  // Typewriter engine
+  let lineIdx = 0;
+
+  function typeNextLine() {
+    if (lineIdx >= lineEls.length) {
+      // Done — show cursor
+      cursorLine.style.opacity = '1';
+      return;
+    }
+
+    const { el, data } = lineEls[lineIdx];
+    el.classList.add('visible');
+    lineIdx++;
+
+    if (data.type === 'blank') {
+      setTimeout(typeNextLine, 150);
+      return;
+    }
+
+    if (data.type === 'cmd') {
+      // Type command character by character (fast)
+      typeText(el, data.text, 'cmd', 45, () => {
+        setTimeout(typeNextLine, 300);
+      });
+    } else {
+      // Output — type slightly slower with > prefix
+      const prefix = '<span class="cmd">&gt; </span>';
+      el.innerHTML = prefix;
+      // Slightly delay then reveal output
+      setTimeout(() => {
+        el.innerHTML = prefix + data.html;
+        setTimeout(typeNextLine, 200);
+      }, 120);
+    }
+  }
+
+  function typeText(el, text, className, speed, callback) {
+    // Parse: $ prefix in blue, rest in gray
+    const parts = text.match(/^(\$ )(.*)/);
+    let charIdx = 0;
+
+    if (parts) {
+      el.innerHTML = '<span class="cmd">$ </span>';
+      const restText = parts[2];
+      charIdx = 0;
+
+      function typeChar() {
+        if (charIdx < restText.length) {
+          el.innerHTML = '<span class="cmd">$ </span><span class="cmd-text">' + restText.substring(0, charIdx + 1) + '</span>';
+          charIdx++;
+          setTimeout(typeChar, speed + Math.random() * 30);
+        } else {
+          if (callback) callback();
+        }
+      }
+      typeChar();
+    } else {
+      el.textContent = '';
+      function typeChar() {
+        if (charIdx < text.length) {
+          el.textContent += text[charIdx];
+          charIdx++;
+          setTimeout(typeChar, speed);
+        } else {
+          if (callback) callback();
+        }
+      }
+      typeChar();
+    }
+  }
+
+  // Start after short delay
+  setTimeout(typeNextLine, 600);
+})();
+
+/* ============ ABOUT CHAT — INTERSECTION TRIGGER ============ */
+(function() {
+  const aboutSection = document.getElementById('aboutSection');
+  if (!aboutSection) return;
+
+  let triggered = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !triggered) {
+        triggered = true;
+        // Bubbles already have animation-delay set in CSS, we just need to trigger them
+        const bubbles = aboutSection.querySelectorAll('.chat-bubble');
+        bubbles.forEach(b => {
+          b.style.animationPlayState = 'running';
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+
+  // Initially pause all bubble animations
+  const bubbles = aboutSection.querySelectorAll('.chat-bubble');
+  bubbles.forEach(b => {
+    b.style.animationPlayState = 'paused';
+  });
+
+  observer.observe(aboutSection);
+})();
+
+/* ============ INTERSECTION OBSERVER ============ */
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.fade-up, .tl-item, .opinion-text').forEach(el => {
+    observer.observe(el);
+  });
+})();
+
+/* ============ MOUSE FOLLOW CURSOR GLOW ============ */
+(function() {
+  const glow = document.getElementById('cursorGlow');
+  let mx = 0, my = 0, gx = 0, gy = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+  });
+
+  function animate() {
+    gx += (mx - gx) * 0.08;
+    gy += (my - gy) * 0.08;
+    glow.style.left = gx + 'px';
+    glow.style.top = gy + 'px';
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+/* ============ CARD TILT (MOUSE FOLLOW) ============ */
+(function() {
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateY(0) rotateX(0) translateY(0)';
+    });
+  });
+})();
+
+/* ============ PARALLAX ON SCROLL (lightweight) ============ */
+(function() {
+  const terminalWin = document.querySelector('.terminal-window');
+  if (!terminalWin) return;
+
+  window.addEventListener('scroll', () => {
+    const st = window.pageYOffset;
+    if (st < window.innerHeight) {
+      const ratio = st / window.innerHeight;
+      terminalWin.style.transform = `translateY(${st * 0.15}px)`;
+      terminalWin.style.opacity = 1 - ratio * 0.6;
+    }
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
