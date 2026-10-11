@@ -305,11 +305,11 @@ function WindowTemplates() {
       </div>
 
       <div id="win-design-skill" className="window-template" style={{ display: 'none' }}>
-        <FinderWindow title="Design Skill" url="hiesther.me/tutorials/esther-design-system" path="Design Skill">
-          <FinderItem href="tutorials/esther-design-system/" extension=".html" label="Design Skill介绍" />
-          <FinderItem href="tutorials/esther-design-system/demo-readme-cards.html" extension=".html" label="Demo ReadMe Cards" />
-          <FinderItem href="tutorials/esther-design-system/design-skill-story.html" extension=".html" label="如何做出 Design Skill" />
-          <FinderItem href="tutorials/esther-design-system/components-preview.html" extension=".html" label="设计组件库" />
+        <FinderWindow title="Design Skill" url="brclio.com/tutorials/brclio-design-system" path="Design Skill">
+          <FinderItem href="tutorials/brclio-design-system/" extension=".html" label="Design Skill介绍" />
+          <FinderItem href="tutorials/brclio-design-system/demo-readme-cards.html" extension=".html" label="Demo ReadMe Cards" />
+          <FinderItem href="tutorials/brclio-design-system/design-skill-story.html" extension=".html" label="如何做出 Design Skill" />
+          <FinderItem href="tutorials/brclio-design-system/components-preview.html" extension=".html" label="设计组件库" />
           <FinderItem href="https://github.com/esthersjw/esther-design-system" extension=".git" kind="Git 仓库" label="GitHub Repo" />
         </FinderWindow>
       </div>

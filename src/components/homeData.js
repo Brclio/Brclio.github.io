@@ -42,7 +42,7 @@ export const workDimensions = [
     title: '设计系统 Skill',
     description: '面向 Brclio 个人 IP 的 Design Skill，整理配色、字体、组件与排版规范，让 AI 创作保持统一的品牌风格。',
     links: [
-      ['✨', 'tutorials/esther-design-system/', 'Design Skill 介绍'],
+      ['✨', 'tutorials/brclio-design-system/', 'Design Skill 介绍'],
       ['💻', 'https://github.com/Brclio/brclio-design-system', 'GitHub Repo'],
     ],
   },
