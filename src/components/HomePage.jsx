@@ -310,7 +310,7 @@ function WindowTemplates() {
           <FinderItem href="tutorials/brclio-design-system/demo-readme-cards.html" extension=".html" label="Demo ReadMe Cards" />
           <FinderItem href="tutorials/brclio-design-system/design-skill-story.html" extension=".html" label="如何做出 Design Skill" />
           <FinderItem href="tutorials/brclio-design-system/components-preview.html" extension=".html" label="设计组件库" />
-          <FinderItem href="https://github.com/esthersjw/esther-design-system" extension=".git" kind="Git 仓库" label="GitHub Repo" />
+          <FinderItem href="https://github.com/Brclio/brclio-design-system" extension=".git" kind="Git 仓库" label="GitHub Repo" />
         </FinderWindow>
       </div>
 
